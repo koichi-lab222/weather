@@ -1,23 +1,12 @@
 <script setup>
 const config = useRuntimeConfig()
 const endpoint = config.public.weatherEndpoint
+const appConfig = useAppConfig()
 
-async function onButtonClick() {
-  console.log(endpoint+"&q=Tokyo")
-  const res = await $fetch(endpoint+"&q=Tokyo")
-  console.log(res)
-}
-
-async function onDummyButtonClick() {
-  const url = "http://localhost:3000/dummy.json?dummy=dummy"
-  const res = await $fetch(url)
-  console.log(res)
-}
 </script>
 
 <template>
   <div>
-    <button @click="onButtonClick">tokyo tenki</button>
-    <button @click="onDummyButtonClick">tokyo tenki(dummy)</button>
+    <div v-for="pref in appConfig.prefs"><a v-bind:href="'/pref/'+pref.q">{{ pref.name }}</a></div>
   </div>
 </template>
