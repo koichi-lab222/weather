@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     public: {
-      weatherEndpoint: '',
+      weatherEndpoint: '/dummy.json?dummy=dummy',
     }
   },
 })
