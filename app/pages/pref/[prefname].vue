@@ -62,8 +62,21 @@ onMounted(async ()=>{
 
 <template>
   <h1 v-if="data">{{ data.city.name }}の天気</h1>
-  <div v-if="data">
-    <SpanWeatherBox v-for="item in data.list" :item="item" />
-  </div>
+  <ul class="box-list" v-if="data">
+    <li v-for="item in data.list"><SpanWeatherBox :item="item" /></li>
+  </ul>
   <p v-if="errorstatus">{{ errorstatus }}:エラーが発生しました</p>
 </template>
+
+<style scoped>
+.box-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.box-list li {
+  width: 25%;
+}
+</style>

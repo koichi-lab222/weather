@@ -20,14 +20,22 @@ function unixTime2DateHourDict(dt) {
 </script>
 
 <template>
-  <div>
-    <ul>
-      <li v-for="t in [unixTime2DateHourDict(item.dt)]">{{t.month}}月{{t.day}}日{{t.hour}}時</li>
-      <li>気温：{{ item.main.temp }}度 体感気温：{{ item.main.feels_like }} 最高気温：{{ item.main.temp_max }}度 最低気温: {{ item.main.temp_min }}度</li>
-      <li>気圧：{{ item.main.pressure }} 気圧(海面)：{{ item.main.sea_level }}</li>
-      <li>湿度：{{ item.main.humidity }}</li>
-      <li>空模様：{{ item.weather.length }} 曇り具合: {{ item.clouds.all }}</li>
-      <li>風速：{{ item.wind.speed }} 風向き: {{ item.wind.deg }}</li>
-    </ul>
+  <div class="weather-wrapper">
+    <div v-for="t in [unixTime2DateHourDict(item.dt)]">{{t.month}}月{{t.day}}日{{t.hour}}時</div>
+    <div><img :src="'https://openweathermap.org/img/wn/'+item.weather[0].icon+'@2x.png'" /></div>
+    <div>{{item.weather[0].description}}</div>
+    <div>気温{{item.main.temp}}度</div>
   </div>
 </template>
+
+<style scoped>
+.weather-wrapper {
+  text-align: center;
+  background: #efe;
+  margin: 4px;
+  box-shadow: 1px 1px 4px #000;
+}
+.weather-wrapper img{
+  filter: drop-shadow(1px 1px 2px #080);
+}
+</style>
