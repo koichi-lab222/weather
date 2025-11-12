@@ -1,9 +1,12 @@
 <script setup>
+import { FetchError } from 'ofetch'
+
 const config = useRuntimeConfig()
 const endpoint = config.public.weatherEndpoint
 const route = useRoute()
 const appConfig = useAppConfig()
 const prefname = route.params.prefname
+const errorstatus = ref(false)
 
 if(!(prefname in appConfig.prefNameDict)) {
   throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
@@ -42,9 +45,16 @@ onMounted(async ()=>{
   if(cacheData) {
     data.value = cacheData
   }else{
-    const fetched = await $fetch(endpoint+`&q=${route.params.prefname}`)
-    data.value = fetched
-    setCache('weathercache-'+prefname, fetched)
+    try{
+      const fetched = await $fetch(endpoint+`&q=${route.params.prefname}`)
+      data.value = fetched
+      setCache('weathercache-'+prefname, fetched)
+    }catch(error){
+      if (error instanceof FetchError) {
+        console.log(error)
+        errorstatus.value = error.response.status
+      }
+    }
   }
 })
 </script>
@@ -54,4 +64,5 @@ onMounted(async ()=>{
   <div v-if="data">
     <SpanWeatherBox v-for="item in data.list" :item="item" />
   </div>
+  <p v-if="errorstatus">{{ errorstatus }}:エラーが発生しました</p>
 </template>
