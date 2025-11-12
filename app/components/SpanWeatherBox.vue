@@ -1,12 +1,20 @@
 <script setup>
 const props = defineProps(['item'])
 
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 function unixTime2DateHourDict(dt) {
-  const t = new Date(dt*1000)
+  const t = dayjs(dt*1000)
+  const tjtc = t.tz('Asia/Tokyo')
   return {
-    month: t.getMonth()+1,
-    day: t.getDate(),
-    hour: t.getHours(),
+    month: tjtc.month()+1,
+    day: tjtc.date(),
+    hour: tjtc.hour(),
   }
 }
 </script>
