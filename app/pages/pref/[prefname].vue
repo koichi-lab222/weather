@@ -3,17 +3,18 @@ import { FetchError } from 'ofetch'
 
 const config = useRuntimeConfig()
 const endpoint = config.public.weatherEndpoint
+const prefNameDict = config.public.prefNameDict
+const cacheExpire = config.public.cacheExpire
 const route = useRoute()
-const appConfig = useAppConfig()
 const prefname = route.params.prefname
 const errorstatus = ref(false)
 
-if(!(prefname in appConfig.prefNameDict)) {
+if(!(prefname in prefNameDict)) {
   throw createError({ statusCode: 404, statusMessage: 'Page Not Found' })
 }
 
 useHead({
-  title: `天気予報[ ${appConfig.prefNameDict[route.params.prefname]} ]`
+  title: `天気予報[ ${prefNameDict[route.params.prefname]} ]`
 })
 
 const data = ref(null)
@@ -35,7 +36,7 @@ function getCache(key) {
 function setCache(key, data) {
   const cache = {
     data: data,
-    expire: Date.now() + appConfig.cacheExpire,
+    expire: Date.now() + cacheExpire,
   }
   sessionStorage.setItem(key, JSON.stringify(cache))
 }
