@@ -10,4 +10,5 @@ const prefNameDict = Object.fromEntries(prefs.map(n=>[n.q, n.name]))
 export default defineAppConfig({
   prefs: prefs,
   prefNameDict: prefNameDict,
+  cacheExpire: 1*60*1000,
 })
